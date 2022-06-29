@@ -29,9 +29,15 @@ That's it.
 This extension is not published on the VSCode marketplace.
 You can install it from the VSIX file available in each GitHub release.
 
-1. Download the latest VSIX [here](https://github.com/vorban/laloi/releases).
-2. ![Command Palette: install from VSIX](https://github.com/vorban/laloi/blob/main/docs/img/cmd_from_vsix.png?raw=true)
-3. Or ![Install from VSIX](https://github.com/vorban/laloi/blob/main/docs/img/from_vsix.png?raw=true)
+
+1. Download the latest VSIX [here](https://github.com/vorban/laloi/releases)
+2. a) Install from the command palette
+
+![Command Palette: install from VSIX](https://github.com/vorban/laloi/blob/main/docs/img/cmd_from_vsix.png?raw=true)|
+
+2. b) Or Install from the extension menu
+
+![Install from VSIX](https://github.com/vorban/laloi/blob/main/docs/img/from_vsix.png?raw=true)|
 
 ## Extension Settings
 
