@@ -15,6 +15,8 @@ Tailored for me, not for mass distribution.
 
 ## Requirements
 
+For the extension to work on your Laravel project, you need:
+
 ### [laravel/pint](https://github.com/laravel/pint)
 
 Require it:
