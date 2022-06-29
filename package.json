@@ -1,8 +1,11 @@
 {
     "name": "laloi",
     "displayName": "laloi",
-    "description": "The law.",
-    "version": "0.0.1",
+    "description": "The law. Runs laravel/pint through a docker-container on .php file save.",
+    "version": "0.1.0",
+    "repository": {
+        "url": "https://github.com/vorban/laloi"
+    },
     "engines": {
         "vscode": "^1.68.0"
     },
