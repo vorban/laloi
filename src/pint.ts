@@ -1,4 +1,4 @@
-import { spawn } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import { readdirSync, readFileSync } from "fs";
 import { Disposable, TextDocument, window, workspace } from "vscode";
 
@@ -66,6 +66,17 @@ function isPintInstalled(workspacePath: string): boolean {
     return result;
 }
 
+/**
+ * @param workspacePath the path to the docker-compose project
+ * @returns true if the `app` container is running, false otherwise.
+ */
+function isContainerRunning(workspacePath: string): boolean {
+    let ps = spawnSync('docker', ['compose', 'ps', '--filter', 'status=running', '--services'], {
+        cwd: workspacePath
+    });
+    return ps.stdout.toString().split('\n').includes('app');
+}
+
 export class Pint implements Disposable {
     constructor(subscriptions: Disposable[]) {
         workspace.onDidSaveTextDocument(this.fix, this, subscriptions);
@@ -80,28 +91,35 @@ export class Pint implements Disposable {
 
         let workspacePath = getWorkspacePath(e);
         if (!isPintInstalled(workspacePath)) {
-            window.showWarningMessage("Laravel-pint is not found. Please require --dev and install it.");
+            window.showWarningMessage("laravel/pint is not found. Please require --dev and install it.");
             return;
         }
 
-        let filepath = getFilePath(e, workspacePath);
-        let params = ['run', 'app', 'vendor/bin/pint', filepath];
-        console.log('[laloi] docker-compose ' + params.join(' '));
 
-        let exec = spawn('docker-compose', params, {
+        let filepath = getFilePath(e, workspacePath);
+        let params = ['compose', isContainerRunning(workspacePath) ? 'exec' : 'run', 'app', 'vendor/bin/pint', filepath];
+
+        console.log('[laloi] docker ' + params.join(' '));
+
+        let exec = spawn('docker', params, {
             cwd: workspacePath
         });
 
         exec.on('exit', (code: number) => {
-            console.log(`[laloi] laravel-pint exit code: ${code}`);
+            console.log(`[laloi] laravel/pint exit code: ${code}`);
             if (code !== 0) {
-                window.showErrorMessage(`Laravel-pint exited with code ${code}.`);
+                window.showErrorMessage(`[Laloi] laravel/pint exited with code ${code}.`);
             }
         });
 
+        exec.stdout.on('data', data => {
+            // contains stdout and stderr of laravel/pint
+            console.info(`[laloi] laravel/pint std-out/err: ${data}`);
+        });
+
         exec.stderr.on('data', data => {
-            window.showErrorMessage(data);
-            console.error(`[laloi] laravel-pint stderr: ${data}`);
+            // contains stdout of docker-compose (shitty behaviour).
+            console.error(`[laloi] docker-compose stderr: ${data}`);
         });
     }
 }
