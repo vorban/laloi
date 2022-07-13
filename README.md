@@ -10,7 +10,8 @@ Tailored for me, not for mass distribution.
 - Verifies that `composer.json` contains a `laravel/pint` key in the `require-dev` array.
 - Verifies that the `pint` executable is found in `vendor/bin/`.
 - When saving a file, runs `pint` on it, in a docker container.
-  - run `docker-compose exec app ...`.
+  - run `docker compose exec app ...` if `app` is not running.
+  - run `docker compose run app ...` if `app` is already running (way faster).
   - configuration for the service name is not yet available.
 
 ## Requirements
@@ -40,6 +41,20 @@ You can install it from the VSIX file available in each GitHub release.
 2. b) Or Install from the extension menu
 
 ![Install from VSIX](https://github.com/vorban/laloi/blob/main/docs/img/from_vsix.png?raw=true)|
+
+
+## Configuration
+
+You can use `laravel/pint` documentation for this. Long story short, pint automatically
+reads the `pint.json` file at the root of your project. You can set your preferences
+in there. Example:
+
+```json
+// ./pint.json
+{
+    "preset": "laravel"
+}
+```
 
 ## Extension Settings
 
